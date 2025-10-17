@@ -1,0 +1,43 @@
+<#FULL GUIDE: Convert PowerShell Script (.PS1) to Executable (.EXE) 
+Полная инструкция: конвертация PowerShell скрипта (.PS1) в исполняемый файл (.EXE)#>
+
+# 1️⃣ Check current execution policies / Проверка текущих политик
+Get-ExecutionPolicy -List
+
+# 2️⃣ Set safe execution policy for current user / Разрешение запуска скриптов для текущего пользователя
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+
+# Verify / Проверка
+Get-ExecutionPolicy -Scope CurrentUser
+
+# 3️⃣ Unblock PS1 file if downloaded from the internet / Разблокировка файла, если скачан с интернета
+Unblock-File -Path "C:\Path\To\Check-Kernel41.ps1"
+
+# 4️⃣ Install required modules / Установка необходимых модулей
+Install-Module -Name PSReadLine -Scope CurrentUser -Force
+Install-Module -Name ps2exe -Scope CurrentUser -Force
+
+# Check installed modules / Проверка установки
+Get-Module -ListAvailable PSReadLine
+Get-Module -ListAvailable ps2exe
+
+# Check if conversion command is available / Проверка команды для конвертации
+Get-Command Invoke-PS2EXE -ErrorAction SilentlyContinue
+
+# 5️⃣ Convert PS1 to EXE / Конвертация PS1 в EXE
+
+# --- Basic conversion / Базовая конвертация ---
+Invoke-PS2EXE -InputFile "C:\Path\To\Check-Kernel41.ps1" -OutputFile "C:\Path\To\Check-Kernel41.exe"
+
+# --- Conversion with hidden console (optional) / Конвертация без отображения консоли (опционально) ---
+Invoke-PS2EXE -InputFile "C:\Path\To\Check-Kernel41.ps1" -OutputFile "C:\Path\To\Check-Kernel41.exe" -NoConsole
+
+# --- Conversion with icon (optional) / Конвертация с иконкой (опционально) ---
+Invoke-PS2EXE -InputFile "C:\Path\To\Check-Kernel41.ps1" -OutputFile "C:\Path\To\Check-Kernel41.exe" -IconFile "C:\Path\To\icon.ico"
+
+# --- Recommended full command for testing / Рекомендуемая полная команда для теста ---
+Invoke-PS2EXE -InputFile "C:\Path\To\Check-Kernel41.ps1" -OutputFile "C:\Path\To\Check-Kernel41.exe" -IconFile "C:\Path\To\icon.ico"
+
+# 6️⃣ Testing / Тестирование
+# Run the EXE via CMD or PowerShell to see output and pause / Запускайте EXE через CMD или PowerShell, чтобы увидеть вывод и паузу
+# After verification, optional -NoConsole can be used / После проверки можно использовать -NoConsole для скрытого окна
